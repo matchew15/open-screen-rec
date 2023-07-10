@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Screen Recorder</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+function startRecording() {
+  // Get the user's permission to record the screen.
+  navigator.mediaDevices.getDisplayMedia({ audio: true, video: { mediaSource: "screen" } })
+    .then(function(stream) {
+      // Create a MediaRecorder object and start recording.
+      var recorder = new MediaRecorder(stream);
+      recorder.start();
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+}
+
+function stopRecording() {
+  // Stop the recording and save the file to the user's local storage.
+  var recorder = new MediaRecorder();
+  recorder.stop();
+  var blob = recorder.blob;
+  var url = window.URL.createObjectURL(blob);
+  var a = document.createElement("a");
+  a.href = url;
+  a.download = "recording.mp4";
+  a.click();
+}
+</script>
+<style>
+body {
+  font-family: sans-serif;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+<h1>Screen Recorder</h1>
+<button onclick="startRecording()">Start Recording</button>
+<button onclick="stopRecording()">Stop Recording</button>
+</body>
+</html>
